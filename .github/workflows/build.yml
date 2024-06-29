@@ -1,0 +1,82 @@
+name: CI For ExampleMod
+on:
+  push:
+    paths:
+      - .github/workflows/**
+      - src/**
+      - gradle/scripts/**
+      - build.gradle
+      - gradle.properties
+      - settings.gradle
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    env:
+      GITHUB_ACTION_NUMBER: ${{ vars.GITHUB_RUN_NUMBER }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v3
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4.2.1
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: make gradle wrapper executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build
+        run: ./gradlew build
+
+      #- name: Publish to maven
+      #  run: ./gradlew publish
+      #  env:
+      #    MAVEN_URL: ${{ secrets.MAVEN_URL }}
+      #    MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+      #    MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+      #  continue-on-error: true
+
+      - name: Read Properties
+        id: 'properties'
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: gradle.properties
+          properties: 'mod_id mod_name'
+
+      - name: Get Version
+        id: var
+        run: |
+          MESSAGE=$(ls build/libs/* | grep sources.jar -v | grep shadow.jar -v | grep slim.jar -v | awk -F '${{ steps.properties.outputs.mod_id }}-|.jar' '{print $2}')
+          echo version=$MESSAGE >> $GITHUB_OUTPUT
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: "${{ steps.properties.outputs.mod_name }} ${{ steps.var.outputs.version }}"
+          path: build/libs/${{ steps.properties.outputs.mod_id }}-${{ steps.var.outputs.version }}.jar
+
+      - uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          name: "${{ steps.properties.outputs.mod_name }}-${{ steps.var.outputs.version }}"
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-tag: "${{ steps.var.outputs.version }}"
+          github-generate-changelog: true
+          github-prerelease: true
+
+          files: build/libs/${{ steps.properties.outputs.mod_id }}-${{ steps.var.outputs.version }}.jar
+
+  # gametest:
+  #   uses: ./.github/workflows/gametest.yml

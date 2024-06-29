@@ -1,0 +1,76 @@
+java {
+    registerFeature("gtm") {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature("jei") {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature("rei") {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature("emi") {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature("jade") {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature("top") {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature("ae2") {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature("kjs") {
+        usingSourceSet(sourceSets.main)
+    }
+}
+
+dependencies {
+    implementation(forge.neoForge)
+
+    // Registrate
+    compileOnlyApi("com.tterrag.registrate:Registrate:${forge.versions.registrate.get()}")
+
+    // LDLib
+    compileOnlyApi(forge.ldlib.neoforge)
+
+    // Configuration
+    compileOnlyApi(forge.configuration)
+
+    // JEI
+    jeiCompileOnly(forge.jei.common.api) { transitive = false }
+    jeiCompileOnly(forge.jei.forge.api) { transitive = false }
+    jeiCompileOnly(forge.jei.forge.impl) { transitive = false }
+
+    // REI
+    reiCompileOnlyApi(forge.rei.plugin)
+    reiCompileOnlyApi(forge.rei.api)
+    reiCompileOnly(forge.rei.forge)
+
+    // EMI
+    emiCompileOnlyApi("dev.emi:emi-neoforge:${forge.versions.emi.get()}:api")
+    emiImplementation(forge.emi)
+
+    // Jade
+    jadeImplementation(forge.jade)
+
+    // TOP
+    topCompileOnlyApi(forge.theoneprobe) { transitive = false }
+
+    // AE2
+    ae2CompileOnlyApi(forge.ae2) { transitive = false }
+
+    // KJS
+    kjsCompileOnlyApi(forge.kubejs)
+
+    // GTM
+    gtmImplementation(forge.gtm) { transitive = false }
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    if (System.getenv("RUN_SERVER") == null) {
+        runtimeOnly("maven.modrinth:embeddium:1.0.0-beta.1+mc1.21")
+    }
+}

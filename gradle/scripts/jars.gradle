@@ -1,0 +1,16 @@
+java {
+    withSourcesJar()
+}
+
+// Enable the Jar-in-Jar system for your mod
+jarJar.enable()
+
+tasks.jar {
+    archiveClassifier = "slim"
+}
+
+tasks.jarJar {
+    archiveClassifier.convention(null)
+}
+
+archivesBaseName = "${project.name}-${libs.versions.minecraft.get()}"
