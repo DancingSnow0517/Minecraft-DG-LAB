@@ -22,10 +22,12 @@ public class WebSocketServer {
 
     @Getter
     private static volatile boolean running = false;
+
     private static EventLoopGroup bossGroup;
     private static EventLoopGroup workerGroup;
     private static volatile Channel serverChannel;
 
+    @SuppressWarnings("BusyWait")
     public static void run() {
         try {
             bossGroup = new NioEventLoopGroup(1);

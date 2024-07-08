@@ -1,8 +1,8 @@
 package cn.dancingsnow.dglab;
 
 import cn.dancingsnow.dglab.config.ConfigHolder;
-
 import cn.dancingsnow.dglab.server.WebSocketServer;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

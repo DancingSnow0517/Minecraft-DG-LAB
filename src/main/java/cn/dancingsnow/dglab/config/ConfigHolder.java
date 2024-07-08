@@ -25,9 +25,9 @@ public class ConfigHolder {
 
     @Configurable
     @Configurable.Comment({
-            "The address for the DgLab-App to connect",
-            "Default: 127.0.0.1",
-            "In most cases, this is same with the address you use to connect to the MC server"
+        "The address for the DgLab-App to connect",
+        "Default: 127.0.0.1",
+        "In most cases, this is same with the address you use to connect to the MC server"
     })
     public String address = "127.0.0.1";
 
