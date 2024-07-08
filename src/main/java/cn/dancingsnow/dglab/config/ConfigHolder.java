@@ -20,14 +20,19 @@ public class ConfigHolder {
     }
 
     @Configurable
+    @Configurable.Comment({"If true, will start WebSocket server", "Default: false"})
+    public boolean enabled = false;
+
+    @Configurable
     @Configurable.Comment({
-        "The address for the DgLab-App to connect",
-        "Default: 127.0.0.1",
-        "In most cases, this is same with the address you use to connect to the MC server"
+            "The address for the DgLab-App to connect",
+            "Default: 127.0.0.1",
+            "In most cases, this is same with the address you use to connect to the MC server"
     })
     public String address = "127.0.0.1";
 
     @Configurable
     @Configurable.Comment({"The port for the DgLab ws server port number", "Default: 8080"})
+    @Configurable.Range(min = 1, max = 65535)
     public int port = 8080;
 }

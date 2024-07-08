@@ -37,7 +37,9 @@ public class DgLabMod {
     }
 
     public static void onStartUp(FMLCommonSetupEvent event) {
-        WebSocketServer.run();
+        if (ConfigHolder.INSTANCE.enabled) {
+            WebSocketServer.run();
+        }
     }
 
     public static void onShutdown(GameShuttingDownEvent event) {

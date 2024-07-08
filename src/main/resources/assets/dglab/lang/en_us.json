@@ -1,3 +1,8 @@
 {
-    "message.dglab.click_to_show_qr_code": "Click here to show QR code to connect"
+    "config.dglab.option.enabled": "Enabled",
+    "config.dglab.option.address": "Address",
+    "config.dglab.option.port": "Port",
+    "config.screen.dglab": "DgLab Config",
+    "message.dglab.click_to_show_qr_code": "Click here to show QR code to connect",
+    "message.dglab.server_not_enabled": "WebSocket Server not enabled"
 }

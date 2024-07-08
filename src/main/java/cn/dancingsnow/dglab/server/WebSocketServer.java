@@ -16,10 +16,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import lombok.Getter;
 
 public class WebSocketServer {
 
-    private static volatile boolean running = true;
+    @Getter
+    private static volatile boolean running = false;
     private static EventLoopGroup bossGroup;
     private static EventLoopGroup workerGroup;
     private static volatile Channel serverChannel;
@@ -53,6 +55,7 @@ public class WebSocketServer {
                             DgLabMod.LOGGER.info(
                                     "DgLab WebSocket server start in port {}", ConfigHolder.INSTANCE.port);
                             serverChannel = f.channel();
+                            running = true;
 
                             while (running) {
                                 Thread.sleep(1000);
