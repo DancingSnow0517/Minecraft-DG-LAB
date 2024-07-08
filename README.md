@@ -1,5 +1,7 @@
 # Minecraft-DG-LAB
 
+English | [简体中文](README_cn.md)
+
 A Mod to connect minecraft with DgLab
 
 ### Usage
