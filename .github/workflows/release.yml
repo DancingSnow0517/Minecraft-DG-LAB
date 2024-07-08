@@ -68,4 +68,4 @@ jobs:
 
           files: |
             build/libs/${{ steps.properties.outputs.mod_id }}-${{ steps.var.outputs.version }}.jar
-            build/libs/${{ steps.properties.outputs.mod_id }}-${{ steps.var.outputs.version }}-source.jar
+            build/libs/${{ steps.properties.outputs.mod_id }}-${{ steps.var.outputs.version }}-sources.jar
