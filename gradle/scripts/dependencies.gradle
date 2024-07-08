@@ -1,7 +1,11 @@
+configurations {
+    libraries
+    // This will make sure that all dependencies that you add to the libraries configuration will also be added to the implementation configuration
+    // This way, you only need one dependency declaration for both runtime and compile dependencies
+    implementation.extendsFrom libraries
+}
+
 java {
-    registerFeature("gtm") {
-        usingSourceSet(sourceSets.main)
-    }
     registerFeature("jei") {
         usingSourceSet(sourceSets.main)
     }
@@ -17,9 +21,6 @@ java {
     registerFeature("top") {
         usingSourceSet(sourceSets.main)
     }
-    registerFeature("ae2") {
-        usingSourceSet(sourceSets.main)
-    }
     registerFeature("kjs") {
         usingSourceSet(sourceSets.main)
     }
@@ -28,14 +29,9 @@ java {
 dependencies {
     implementation(forge.neoForge)
 
-    // Registrate
-    compileOnlyApi("com.tterrag.registrate:Registrate:${forge.versions.registrate.get()}")
-
-    // LDLib
-    compileOnlyApi(forge.ldlib.neoforge)
-
     // Configuration
-    compileOnlyApi(forge.configuration)
+    api(forge.configuration)
+    jarJar(forge.configuration)
 
     // JEI
     jeiCompileOnly(forge.jei.common.api) { transitive = false }
@@ -57,14 +53,11 @@ dependencies {
     // TOP
     topCompileOnlyApi(forge.theoneprobe) { transitive = false }
 
-    // AE2
-    ae2CompileOnlyApi(forge.ae2) { transitive = false }
-
     // KJS
-    kjsCompileOnlyApi(forge.kubejs)
+    kjsImplementation(forge.kubejs)
 
-    // GTM
-    gtmImplementation(forge.gtm) { transitive = false }
+    libraries("io.netty:netty-codec-http:4.1.97.Final")
+    jarJar("io.netty:netty-codec-http:4.1.97.Final")
 
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
@@ -73,4 +66,6 @@ dependencies {
     if (System.getenv("RUN_SERVER") == null) {
         runtimeOnly("maven.modrinth:embeddium:1.0.0-beta.1+mc1.21")
     }
+
+    runtimeOnly("curse.maven:probejs-585406:5492036")
 }

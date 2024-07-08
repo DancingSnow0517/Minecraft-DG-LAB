@@ -1,6 +1,6 @@
 subsystems {
     parchment {
-        minecraftVersion = '1.20.6'
+        minecraftVersion = libs.versions.minecraft.get()
         mappingsVersion = libs.versions.parchment.get()
     }
 }
@@ -25,6 +25,10 @@ runs {
         systemProperty 'forge.logging.console.level', 'debug'
 
         modSource project.sourceSets.main
+
+        dependencies {
+            runtime project.configurations.libraries
+        }
     }
 
     client {
