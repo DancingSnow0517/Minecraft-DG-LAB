@@ -26,8 +26,8 @@ public class DgLabCommand {
                     Player player = ctx.getSource().getPlayerOrException();
                     String qr = "https://www.dungeon-lab.com/app-download.php#DGLAB-SOCKET#ws://%s:%d/%s"
                             .formatted(
-                                    ConfigHolder.INSTANCE.address,
-                                    ConfigHolder.INSTANCE.port,
+                                    ConfigHolder.INSTANCE.webSocket.address,
+                                    ConfigHolder.INSTANCE.webSocket.port,
                                     player.getUUID().toString());
                     ctx.getSource()
                             .sendSuccess(

@@ -53,9 +53,10 @@ public class WebSocketServer {
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             new Thread(() -> {
                         try {
-                            ChannelFuture f = bootstrap.bind(ConfigHolder.INSTANCE.port).sync();
+                            ChannelFuture f =
+                                    bootstrap.bind(ConfigHolder.INSTANCE.webSocket.port).sync();
                             DgLabMod.LOGGER.info(
-                                    "DgLab WebSocket server start in port {}", ConfigHolder.INSTANCE.port);
+                                    "DgLab WebSocket server start in port {}", ConfigHolder.INSTANCE.webSocket.port);
                             serverChannel = f.channel();
                             running = true;
 
@@ -90,10 +91,10 @@ public class WebSocketServer {
     }
 
     public static void stop() {
-        running = false;
-        if (serverChannel != null) {
+        if (running && serverChannel != null) {
             serverChannel.close();
+            running = false;
+            DgLabMod.LOGGER.info("DgLab WebSocket server stopped");
         }
-        DgLabMod.LOGGER.info("DgLab WebSocket server stopped");
     }
 }

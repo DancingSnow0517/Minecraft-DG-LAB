@@ -3,6 +3,11 @@ package cn.dancingsnow.dglab.server;
 import cn.dancingsnow.dglab.DgLabMod;
 import cn.dancingsnow.dglab.util.DgLabStringUtil;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+
 import com.google.gson.JsonSyntaxException;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -10,6 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +62,15 @@ public class Connection {
                     strength.setBCurrentStrength(Integer.parseInt(matcher.group(2)));
                     strength.setAMaxStrength(Integer.parseInt(matcher.group(3)));
                     strength.setBMaxStrength(Integer.parseInt(matcher.group(4)));
+
+                    MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+                    if (currentServer != null) {
+                        ServerPlayer player =
+                                currentServer.getPlayerList().getPlayer(UUID.fromString(clientId));
+                        if (player != null) {
+                            PacketDistributor.sendToPlayer(player, strength);
+                        }
+                    }
                 }
             }
         }
@@ -68,6 +83,11 @@ public class Connection {
     public void sendMessage(String message) {
         DgLabMod.LOGGER.info("Sending message: {}", message);
         channel.writeAndFlush(new TextWebSocketFrame(message));
+    }
+
+    public void disconnect() {
+        sendMessage(new DgLabMessage(DgLabMessageType.BREAK, clientId, targetId, ""));
+        channel.close();
     }
 
     public void reduceStrength(ChannelType type, int value) {
