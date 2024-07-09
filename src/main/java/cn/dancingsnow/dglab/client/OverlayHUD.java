@@ -31,9 +31,32 @@ public class OverlayHUD {
         poseStack.pushPose();
         poseStack.scale(scale, scale, scale);
 
-        String text = "Test HUD Text";
-        int textWidth = font.width(text);
-        //        graphics.drawString(font, Component.translatable("gui."), x, y, 0xDC143C);
+        int textWidth = font.width("100");
+
+        int minX = x - (textWidth / 2) - 5;
+        int maxX = x + 20 + (textWidth / 2) + 5;
+        int minY = y - 5;
+        int maxY = y + 10 + 12;
+
+        if (ConfigHolder.INSTANCE.client.showMaxStrength) {
+            maxY += 10;
+        }
+
+        // 背景
+        graphics.fill(minX, minY, maxX, maxY, 0xC82E2E2E);
+
+        // 框框
+        int borderColor = (strength.getACurrentStrength() < strength.getAMaxStrength()
+                        && strength.getBCurrentStrength() < strength.getBMaxStrength())
+                ? 0xFFFFE99D
+                : 0xFFDC143C;
+
+        graphics.hLine(minX, maxX, minY, borderColor);
+        graphics.hLine(minX, maxX, maxY, borderColor);
+        graphics.vLine(minX, minY, maxY, borderColor);
+        graphics.vLine(maxX, minY, maxY, borderColor);
+
+        // 文字
         graphics.drawCenteredString(font, "A", x, y, 0x55FF55);
         graphics.drawCenteredString(font, "B", x + 20, y, 0x55FF55);
 
@@ -42,10 +65,12 @@ public class OverlayHUD {
         graphics.drawCenteredString(
                 font, String.valueOf(strength.getBCurrentStrength()), x + 20, y + 10, 0xFFE99D);
 
-        graphics.drawCenteredString(
-                font, String.valueOf(strength.getAMaxStrength()), x, y + 20, 0xDC143C);
-        graphics.drawCenteredString(
-                font, String.valueOf(strength.getBMaxStrength()), x + 20, y + 20, 0xDC143C);
+        if (ConfigHolder.INSTANCE.client.showMaxStrength) {
+            graphics.drawCenteredString(
+                    font, String.valueOf(strength.getAMaxStrength()), x, y + 20, 0xDC143C);
+            graphics.drawCenteredString(
+                    font, String.valueOf(strength.getBMaxStrength()), x + 20, y + 20, 0xDC143C);
+        }
 
         poseStack.popPose();
     }

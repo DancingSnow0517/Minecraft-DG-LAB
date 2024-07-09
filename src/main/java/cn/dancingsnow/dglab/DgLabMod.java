@@ -1,13 +1,13 @@
 package cn.dancingsnow.dglab;
 
-import cn.dancingsnow.dglab.client.ClientData;
 import cn.dancingsnow.dglab.config.ConfigHolder;
+import cn.dancingsnow.dglab.networking.DgLabPackets;
 import cn.dancingsnow.dglab.server.Connection;
 import cn.dancingsnow.dglab.server.ConnectionManager;
-import cn.dancingsnow.dglab.server.Strength;
 import cn.dancingsnow.dglab.server.WebSocketServer;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -16,6 +16,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
@@ -53,17 +54,18 @@ public class DgLabMod {
 
     public static void registerPayload(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToClient(
-                Strength.TYPE, Strength.STREAM_CODEC, (strength, ctx) -> ClientData.setStrength(strength));
+        DgLabPackets.init(registrar);
     }
 
     public static void onPlayerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        Player entity = event.getEntity();
-        Connection connection = ConnectionManager.getByPlayer(entity);
+        Player player = event.getEntity();
+        Connection connection = ConnectionManager.getByPlayer(player);
         if (connection != null) {
             connection.disconnect();
         }
-        ClientData.setStrength(null);
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketDistributor.sendToPlayer(serverPlayer, DgLabPackets.ClearStrength.INSTANCE);
+        }
     }
 
     public static void onStartUp(FMLCommonSetupEvent event) {

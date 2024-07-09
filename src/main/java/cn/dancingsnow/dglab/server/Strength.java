@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 @Data
 public class Strength implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<Strength> TYPE = new Type<>(DgLabMod.id("strength"));
+    public static final Type<Strength> TYPE = new Type<>(DgLabMod.id("strength"));
     public static final StreamCodec<ByteBuf, Strength> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
             Strength::getACurrentStrength,

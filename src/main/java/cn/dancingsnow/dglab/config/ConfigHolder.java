@@ -62,5 +62,9 @@ public class ConfigHolder {
         @Configurable
         @Configurable.Comment({"The gui hud y position", "Default: 25"})
         public int hudY = 25;
+
+        @Configurable
+        @Configurable.Comment({"If true, will show the max strength in hud", "Default: false"})
+        public boolean showMaxStrength = false;
     }
 }
