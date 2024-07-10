@@ -1,6 +1,8 @@
 package cn.dancingsnow.dglab.server;
 
 import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.api.Connection;
+import cn.dancingsnow.dglab.api.ConnectionManager;
 import cn.dancingsnow.dglab.networking.DgLabPackets;
 
 import net.minecraft.server.MinecraftServer;
@@ -13,7 +15,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.util.AttributeKey;
 
-import java.util.Optional;
 import java.util.UUID;
 
 class DgLabHandlerAdapter extends ChannelInboundHandlerAdapter {
@@ -40,21 +41,19 @@ class DgLabHandlerAdapter extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        Optional<Connection> connection = ConnectionManager.CONNECTIONS.stream()
-                .filter(c -> c.getChannel().equals(ctx.channel()))
-                .findFirst();
-        connection.ifPresent(value -> {
-            ConnectionManager.CONNECTIONS.remove(value);
-            DgLabMod.LOGGER.info("DgLab disconnected, clientId: {}", value.getClientId());
+        Connection connection = ConnectionManager.getByChannel(ctx.channel());
+        if (connection != null) {
+            ConnectionManager.CONNECTIONS.remove(connection);
+            DgLabMod.LOGGER.info("DgLab disconnected, clientId: {}", connection.getClientId());
 
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
                 ServerPlayer player =
-                        server.getPlayerList().getPlayer(UUID.fromString(value.getClientId()));
+                        server.getPlayerList().getPlayer(UUID.fromString(connection.getClientId()));
                 if (player != null) {
                     PacketDistributor.sendToPlayer(player, DgLabPackets.ClearStrength.INSTANCE);
                 }
             }
-        });
+        }
     }
 }

@@ -4,5 +4,7 @@
     "config.dglab.option.port": "端口",
     "config.screen.dglab": "DgLab 配置",
     "message.dglab.click_to_show_qr_code": "单击这里来显示连接二维码",
-    "message.dglab.server_not_enabled": "WebSocket服务器未开启"
+    "message.dglab.disconnect": "断开连接",
+    "message.dglab.server_not_enabled": "WebSocket服务器未开启",
+    "message.dglab.not_connected": "未连接"
 }

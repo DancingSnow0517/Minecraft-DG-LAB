@@ -1,4 +1,4 @@
-package cn.dancingsnow.dglab.server;
+package cn.dancingsnow.dglab.api;
 
 import cn.dancingsnow.dglab.DgLabMod;
 

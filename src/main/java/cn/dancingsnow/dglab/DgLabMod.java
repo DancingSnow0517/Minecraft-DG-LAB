@@ -1,9 +1,9 @@
 package cn.dancingsnow.dglab;
 
+import cn.dancingsnow.dglab.api.Connection;
+import cn.dancingsnow.dglab.api.ConnectionManager;
 import cn.dancingsnow.dglab.config.ConfigHolder;
 import cn.dancingsnow.dglab.networking.DgLabPackets;
-import cn.dancingsnow.dglab.server.Connection;
-import cn.dancingsnow.dglab.server.ConnectionManager;
 import cn.dancingsnow.dglab.server.WebSocketServer;
 
 import net.minecraft.resources.ResourceLocation;

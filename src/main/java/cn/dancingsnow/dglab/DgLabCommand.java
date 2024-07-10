@@ -1,5 +1,7 @@
 package cn.dancingsnow.dglab;
 
+import cn.dancingsnow.dglab.api.Connection;
+import cn.dancingsnow.dglab.api.ConnectionManager;
 import cn.dancingsnow.dglab.config.ConfigHolder;
 import cn.dancingsnow.dglab.server.WebSocketServer;
 
@@ -46,6 +48,18 @@ public class DgLabCommand {
                     ctx.getSource().sendFailure(Component.translatable("message.dglab.server_not_enabled"));
                 }
 
+                return 1;
+            }))
+            .then(Commands.literal("disconnect").executes(ctx -> {
+                Player player = ctx.getSource().getPlayerOrException();
+                Connection connection = ConnectionManager.getByUUID(player.getUUID());
+                if (connection != null) {
+                    connection.disconnect();
+                    ctx.getSource()
+                            .sendSuccess(() -> Component.translatable("message.dglab.disconnect"), true);
+                } else {
+                    ctx.getSource().sendFailure(Component.translatable("message.dglab.not_connected"));
+                }
                 return 1;
             }));
 

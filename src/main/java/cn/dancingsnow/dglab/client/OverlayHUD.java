@@ -1,15 +1,18 @@
 package cn.dancingsnow.dglab.client;
 
+import cn.dancingsnow.dglab.api.Strength;
 import cn.dancingsnow.dglab.config.ConfigHolder;
-import cn.dancingsnow.dglab.server.Strength;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+@OnlyIn(Dist.CLIENT)
 public class OverlayHUD {
     public static void render(GuiGraphics graphics, DeltaTracker partialTick) {
         Minecraft mc = Minecraft.getInstance();
@@ -20,8 +23,6 @@ public class OverlayHUD {
             return;
         }
         Font font = mc.font;
-        int width = mc.getWindow().getGuiScaledWidth();
-        int height = mc.getWindow().getGuiScaledHeight();
         PoseStack poseStack = graphics.pose();
 
         int x = ConfigHolder.INSTANCE.client.hudX;

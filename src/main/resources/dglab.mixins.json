@@ -1,9 +1,9 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.example.examplemod.mixins",
+  "package": "cn.dancingsnow.dglab.mixins",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "examplemod.refmap.json",
+  "refmap": "dglab.refmap.json",
   "mixins": [
   ],
   "client": [

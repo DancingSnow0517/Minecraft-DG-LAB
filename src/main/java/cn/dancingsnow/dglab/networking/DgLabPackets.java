@@ -1,8 +1,8 @@
 package cn.dancingsnow.dglab.networking;
 
 import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.api.Strength;
 import cn.dancingsnow.dglab.client.ClientData;
-import cn.dancingsnow.dglab.server.Strength;
 
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

@@ -1,7 +1,8 @@
-package cn.dancingsnow.dglab.server;
+package cn.dancingsnow.dglab.api;
 
 import net.minecraft.world.entity.player.Player;
 
+import io.netty.channel.Channel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,5 +23,16 @@ public class ConnectionManager {
                 .filter(c -> c.getClientId().equals(uuid.toString()))
                 .findFirst();
         return connection.orElse(null);
+    }
+
+    @Nullable public static Connection getByChannel(@NotNull Channel channel) {
+        Optional<Connection> connection = ConnectionManager.CONNECTIONS.stream()
+                .filter(c -> c.getChannel().equals(channel))
+                .findFirst();
+        return connection.orElse(null);
+    }
+
+    public static void sendToAll(DgLabMessage message) {
+        CONNECTIONS.forEach(connection -> connection.sendMessage(message));
     }
 }
