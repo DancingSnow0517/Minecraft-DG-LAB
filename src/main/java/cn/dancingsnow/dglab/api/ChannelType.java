@@ -1,8 +1,9 @@
 package cn.dancingsnow.dglab.api;
 
-import lombok.Getter;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.util.StringRepresentable;
+
+import lombok.Getter;
 
 import java.util.Locale;
 
@@ -11,7 +12,8 @@ import java.util.Locale;
 public enum ChannelType implements StringRepresentable {
     A(1),
     B(2);
-    public static final StringRepresentableCodec<ChannelType> CODEC = StringRepresentable.fromEnum(ChannelType::values);
+    public static final StringRepresentableCodec<ChannelType> CODEC =
+            StringRepresentable.fromEnum(ChannelType::values);
     private final int typeNumber;
 
     ChannelType(int type) {

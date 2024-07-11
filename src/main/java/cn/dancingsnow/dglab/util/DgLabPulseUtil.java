@@ -51,8 +51,10 @@ public class DgLabPulseUtil {
             }
         }
         if (!frequency.isEmpty() || !strength.isEmpty()) {
-            pulses.add(frequency + "0".repeat(8 - frequency.length()) +
-                    strength + "0".repeat(8 - strength.length()));
+            pulses.add(frequency
+                    + "0".repeat(8 - frequency.length())
+                    + strength
+                    + "0".repeat(8 - strength.length()));
         }
         return pulses;
     }
