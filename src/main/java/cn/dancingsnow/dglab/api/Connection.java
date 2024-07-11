@@ -1,7 +1,7 @@
 package cn.dancingsnow.dglab.api;
 
 import cn.dancingsnow.dglab.DgLabMod;
-import cn.dancingsnow.dglab.util.DgLabStringUtil;
+import cn.dancingsnow.dglab.util.DgLabPulseUtil;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,6 +14,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -105,11 +106,11 @@ public class Connection {
                 clientId, targetId, "strength-%d+2+%d".formatted(type.getTypeNumber(), value)));
     }
 
-    public void addPulse(ChannelType type, String... pulse) {
+    public void addPulse(ChannelType type, List<String> pulse) {
         sendMessage(DgLabMessage.msg(
                 clientId,
                 targetId,
-                "pulse-%d:%s".formatted(type.getTypeNumber(), DgLabStringUtil.toStringArray(pulse))));
+                "pulse-%s:%s".formatted(type.name(), DgLabPulseUtil.toStringArray(pulse))));
     }
 
     public void clearPulse(ChannelType type) {
