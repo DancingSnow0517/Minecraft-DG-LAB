@@ -57,10 +57,7 @@ jobs:
         with:
           name: "${{ steps.properties.outputs.mod_name }} v${{ steps.var.outputs.version }}"
           version: ${{ steps.var.outputs.version }}
-          game-versions: 1.20.1
           version-type: release
-          java: 17
-          loaders: forge
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
