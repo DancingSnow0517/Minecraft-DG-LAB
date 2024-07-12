@@ -60,7 +60,6 @@ public class DgLabPulseUtil {
     }
 
     public static String toStringArray(List<String> array) {
-        System.out.println(array);
         if (array.isEmpty()) {
             return "[]";
         }

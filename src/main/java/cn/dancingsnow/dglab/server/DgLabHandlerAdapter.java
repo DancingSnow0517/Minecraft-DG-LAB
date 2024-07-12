@@ -27,7 +27,6 @@ class DgLabHandlerAdapter extends ChannelInboundHandlerAdapter {
                 clientId = clientId.substring(1);
             }
             ctx.channel().attr(AttributeKey.valueOf("clientId")).set(clientId);
-            System.out.println(clientId);
         }
         super.channelRead(ctx, msg);
     }

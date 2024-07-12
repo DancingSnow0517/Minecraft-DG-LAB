@@ -29,9 +29,65 @@
             connection.addStrength(ChannelType.A, 10)
         }
     })
+
+    EntityEvents.afterHurt('player', event => {
+        // 使用玩家的 UUID 来查找连接的 connection
+        let connection = DgLabManager.getByUUID(event.getEntity().getUuid())
+    
+        // 如果这不是 null, 说明该玩家的 DgLab（郊狼）已经和服务器连接
+        if (connection != null) {
+            let damage = event.getDamage()
+            let strength = 0;
+            if (damage >= 20) {
+                strength = 100
+            } else {
+                strength = Math.ceil((damage / 20) * 100)
+            }
+            // 使用 DgLabPulseUtil.pulse(int...) 来转换波形数据
+            // 这个方法的参数是 频率 和 强度 交替，每一小段是 25ms 的数据
+            // 频率是 10-1000 之间的值，强度是 0-100 之间的值
+            // 例： DgLabPulseUtil.pulse(500, 10, 500, 50)
+            // 这就是两小段，是500频率，10强度和500频率，50强度
+            let pulse = DgLabPulseUtil.pulse(
+                500, 0,
+                500, 0,
+                500, 0,
+                500, 0,
+                500, Math.ceil(strength / 3),
+                500, Math.ceil(strength / 3),
+                500, Math.ceil(strength / 3),
+                500, Math.ceil(strength / 3),
+                500, Math.ceil((strength / 3) * 2),
+                500, Math.ceil((strength / 3) * 2),
+                500, Math.ceil((strength / 3) * 2),
+                500, Math.ceil((strength / 3) * 2),
+                500, Math.ceil(strength),
+                500, Math.ceil(strength),
+                500, Math.ceil(strength),
+                500, Math.ceil(strength),
+                500, Math.ceil((strength / 3) * 2),
+                500, Math.ceil((strength / 3) * 2),
+                500, Math.ceil((strength / 3) * 2),
+                500, Math.ceil((strength / 3) * 2),
+                500, Math.ceil(strength / 3),
+                500, Math.ceil(strength / 3),
+                500, Math.ceil(strength / 3),
+                500, Math.ceil(strength / 3),
+                500, 0,
+                500, 0,
+                500, 0,
+                500, 0
+            )
+   
+            // addPulse methon to add your pulse to channel A
+            connection.addPulse('a', pulse)
+        }
+    })
     ```
 
     这样示例脚本会运行在玩家死亡后，这意味着每当玩家死亡，他的 DgLab（郊狼）会添加 10 点强度到通道 A。
+    
+    以及会在玩家受到伤害后，根据收到的伤害来计算最大强度，生成一个渐渐高再低的波形发生到通道A。
 
 3. 在游戏用运行命令 `/dglab connect`, 你将会得到一个连接，包含了一个二维码，在 DG-LAB APP 中扫描这个二维码后，将会连接你的 APP 到游戏服务器中。
 
