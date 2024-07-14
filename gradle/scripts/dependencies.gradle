@@ -59,6 +59,9 @@ dependencies {
     libraries("io.netty:netty-codec-http:4.1.97.Final")
     jarJar("io.netty:netty-codec-http:4.1.97.Final")
 
+    libraries("com.google.zxing:core:3.5.3")
+    jarJar("com.google.zxing:core:3.5.3")
+
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'

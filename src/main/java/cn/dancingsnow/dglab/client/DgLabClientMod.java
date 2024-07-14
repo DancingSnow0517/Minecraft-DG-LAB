@@ -17,5 +17,6 @@ public class DgLabClientMod {
 
     public static void onRenderGui(RenderGuiEvent.Post event) {
         OverlayHUD.render(event.getGuiGraphics(), event.getPartialTick());
+        QrCodeHUD.render(event.getGuiGraphics(), event.getPartialTick());
     }
 }

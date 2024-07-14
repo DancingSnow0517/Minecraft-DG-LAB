@@ -36,6 +36,15 @@ class DgLabHandlerAdapter extends ChannelInboundHandlerAdapter {
         Connection connection = new Connection(ctx.channel());
         ConnectionManager.CONNECTIONS.add(connection);
         DgLabMod.LOGGER.info("new DgLab connected.");
+
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server != null) {
+            ServerPlayer player =
+                    server.getPlayerList().getPlayer(UUID.fromString(connection.getClientId()));
+            if (player != null) {
+                PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(null));
+            }
+        }
     }
 
     @Override

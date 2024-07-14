@@ -3,6 +3,7 @@ package cn.dancingsnow.dglab;
 import cn.dancingsnow.dglab.api.Connection;
 import cn.dancingsnow.dglab.api.ConnectionManager;
 import cn.dancingsnow.dglab.config.ConfigHolder;
+import cn.dancingsnow.dglab.networking.DgLabPackets;
 import cn.dancingsnow.dglab.server.WebSocketServer;
 
 import net.minecraft.ChatFormatting;
@@ -11,7 +12,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -25,12 +27,13 @@ public class DgLabCommand {
                     DgLabMod.MODID)
             .then(Commands.literal("connect").executes(ctx -> {
                 if (WebSocketServer.isRunning()) {
-                    Player player = ctx.getSource().getPlayerOrException();
+                    ServerPlayer player = ctx.getSource().getPlayerOrException();
                     String qr = "https://www.dungeon-lab.com/app-download.php#DGLAB-SOCKET#ws://%s:%d/%s"
                             .formatted(
                                     ConfigHolder.INSTANCE.webSocket.address,
                                     ConfigHolder.INSTANCE.webSocket.port,
                                     player.getUUID().toString());
+                    PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(qr));
                     ctx.getSource()
                             .sendSuccess(
                                     () -> Component.translatable("message.dglab.click_to_show_qr_code")
@@ -51,7 +54,8 @@ public class DgLabCommand {
                 return 1;
             }))
             .then(Commands.literal("disconnect").executes(ctx -> {
-                Player player = ctx.getSource().getPlayerOrException();
+                ServerPlayer player = ctx.getSource().getPlayerOrException();
+                PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(null));
                 Connection connection = ConnectionManager.getByUUID(player.getUUID());
                 if (connection != null) {
                     connection.disconnect();
