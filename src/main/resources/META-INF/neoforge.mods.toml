@@ -20,7 +20,7 @@ license="${mod_license}"
 [[dependencies."${mod_id}"]] #optional
     modId="neoforge" #mandatory
     type="required" #mandatory
-    versionRange="[21.0.0-alpha,)" #mandatory
+    versionRange="[21.0.76-beta,)" #mandatory
     ordering="NONE"
     side="BOTH"
 
