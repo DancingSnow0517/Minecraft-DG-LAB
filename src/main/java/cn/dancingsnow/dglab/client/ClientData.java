@@ -14,6 +14,7 @@ import com.google.zxing.WriterException;
 import com.mojang.blaze3d.platform.NativeImage;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -30,9 +31,9 @@ public class ClientData {
     @Getter
     @Nullable private static String qrText;
 
-    public static void setQrText(String qrText) {
-        ClientData.qrText = qrText;
-        if (qrText != null) {
+    public static void setQrText(@NotNull String qrText) {
+        if (!qrText.isEmpty()) {
+            ClientData.qrText = qrText;
             try {
                 NativeImage image = NativeImage.read(QRCodeUtil.generateQRCode(qrText));
                 DynamicTexture dynamicTexture = new DynamicTexture(image);
@@ -40,6 +41,8 @@ public class ClientData {
             } catch (IOException | WriterException e) {
                 DgLabMod.LOGGER.error(e.getMessage(), e);
             }
+        } else {
+            ClientData.qrText = null;
         }
     }
 }

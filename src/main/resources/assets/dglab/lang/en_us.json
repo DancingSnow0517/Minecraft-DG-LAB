@@ -3,8 +3,8 @@
     "config.dglab.option.address": "Address",
     "config.dglab.option.port": "Port",
     "config.screen.dglab": "DgLab Config",
-    "message.dglab.click_to_show_qr_code": "Click here to show QR code to connect",
-    "message.dglab.disconnect": "Disconnect",
+    "message.dglab.scan_qr_code": "Scan the QR code in the upper right corner to connect",
+    "message.dglab.disconnect": "disconnect from WebSocket server",
     "message.dglab.server_not_enabled": "WebSocket Server not enabled",
-    "message.dglab.not_connected": "Not Connected"
+    "message.dglab.not_connected": "Currently not connected to the WebSocket server"
 }
