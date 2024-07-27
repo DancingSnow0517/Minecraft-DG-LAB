@@ -28,7 +28,8 @@ public class DgLabCommand {
                                     ConfigHolder.INSTANCE.webSocket.port,
                                     player.getUUID().toString());
                     PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(qr));
-                    ctx.getSource().sendSuccess(() -> Component.translatable("message.dglab.scan_qr_code"), true);
+                    ctx.getSource()
+                            .sendSuccess(() -> Component.translatable("message.dglab.scan_qr_code"), true);
                 } else {
                     ctx.getSource().sendFailure(Component.translatable("message.dglab.server_not_enabled"));
                 }
