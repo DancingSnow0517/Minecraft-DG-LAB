@@ -7,7 +7,6 @@ import cn.dancingsnow.dglab.networking.DgLabPackets;
 import cn.dancingsnow.dglab.server.WebSocketServer;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -16,7 +15,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
@@ -62,9 +60,6 @@ public class DgLabMod {
         Connection connection = ConnectionManager.getByPlayer(player);
         if (connection != null) {
             connection.disconnect();
-        }
-        if (player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.sendToPlayer(serverPlayer, DgLabPackets.ClearStrength.INSTANCE);
         }
     }
 

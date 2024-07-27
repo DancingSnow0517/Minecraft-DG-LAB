@@ -60,6 +60,7 @@ class DgLabHandlerAdapter extends ChannelInboundHandlerAdapter {
                         server.getPlayerList().getPlayer(UUID.fromString(connection.getClientId()));
                 if (player != null) {
                     PacketDistributor.sendToPlayer(player, DgLabPackets.ClearStrength.INSTANCE);
+                    PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(null));
                 }
             }
         }
