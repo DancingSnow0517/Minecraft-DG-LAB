@@ -152,8 +152,6 @@ public class DgLabPulseUtil {
             strengths.add((int) Math.round(startStrength + step * i));
         }
 
-        System.out.println(strengths);
-
         return pulse(IntStream.generate(() -> frequency).limit(duration).boxed().toList(), strengths);
     }
 
