@@ -14,9 +14,9 @@
     ```javascript
     // 更多事件可以查看 https://wiki.latvian.dev/books/kubejs/page/list-of-events
     EntityEvents.death('player', event => {
-        // 使用玩家的 UUID 来查找连接的 connection
-        const connection = DgLabManager.getByUUID(event.getEntity().getUuid())
-    
+    // 使用玩家的 UUID 来查找连接的 connection
+    let connection = DgLabManager.getByUUID(event.getEntity().getUuid())
+
         // 如果这不是 null, 说明该玩家的 DgLab（郊狼）已经和服务器连接
         if (connection != null) {
             // 获取这个玩家的当前强度，可以发挥想象来使用这些值
@@ -24,16 +24,17 @@
             connection.getStrength().getBCurrentStrength()
             connection.getStrength().getAMaxStrength()
             connection.getStrength().getBMaxStrength()
-        
+    
             // 添加 10 点强度到通道 A
-            connection.addStrength(ChannelType.A, 10)
+            connection.addStrength('a', 10)
         }
     })
 
+
     EntityEvents.afterHurt('player', event => {
-        // 使用玩家的 UUID 来查找连接的 connection
-        let connection = DgLabManager.getByUUID(event.getEntity().getUuid())
-    
+    // 使用玩家的 UUID 来查找连接的 connection
+    let connection = DgLabManager.getByUUID(event.getEntity().getUuid())
+
         // 如果这不是 null, 说明该玩家的 DgLab（郊狼）已经和服务器连接
         if (connection != null) {
             let damage = event.getDamage()
@@ -43,43 +44,55 @@
             } else {
                 strength = Math.ceil((damage / 20) * 100)
             }
-            // 使用 DgLabPulseUtil.pulse(int...) 来转换波形数据
+
+            // 波形频率是 10-1000 之间的值，强度是 0-100 之间的值
+        
+            // 使用方法 sinPulse(频率, 强度最小值, 强度最大值, 持续时间) 来生成一段正弦函数波形
+            // 持续时间是 25ms 为单位, 例：40 就是持续 1 秒
+            let pulse = DgLabPulseUtil.sinPulse(400, 20, strength, 40)
+
+            // 使用方法 gradientPulse(频率, 开始强度, 结束强度, 持续时间) 来生成一段渐变波形
+            // let pulse = DgLabPulseUtil.gradientPulse(400, 20, strength, 40)
+
+            // 使用方法 smoothPulse(频率, 强度, 持续时间) 来生成一段没有强度变化的波形
+            // let pulse = DgLabPulseUtil.smoothPulse(400, strength, 40)
+
+            // 也可以使用波形转换原始方法 pulse(int...) 来自定义你的波形
             // 这个方法的参数是 频率 和 强度 交替，每一小段是 25ms 的数据
-            // 频率是 10-1000 之间的值，强度是 0-100 之间的值
             // 例： DgLabPulseUtil.pulse(500, 10, 500, 50)
             // 这就是两小段，是500频率，10强度和500频率，50强度
-            let pulse = DgLabPulseUtil.pulse(
-                500, 0,
-                500, 0,
-                500, 0,
-                500, 0,
-                500, Math.ceil(strength / 3),
-                500, Math.ceil(strength / 3),
-                500, Math.ceil(strength / 3),
-                500, Math.ceil(strength / 3),
-                500, Math.ceil((strength / 3) * 2),
-                500, Math.ceil((strength / 3) * 2),
-                500, Math.ceil((strength / 3) * 2),
-                500, Math.ceil((strength / 3) * 2),
-                500, Math.ceil(strength),
-                500, Math.ceil(strength),
-                500, Math.ceil(strength),
-                500, Math.ceil(strength),
-                500, Math.ceil((strength / 3) * 2),
-                500, Math.ceil((strength / 3) * 2),
-                500, Math.ceil((strength / 3) * 2),
-                500, Math.ceil((strength / 3) * 2),
-                500, Math.ceil(strength / 3),
-                500, Math.ceil(strength / 3),
-                500, Math.ceil(strength / 3),
-                500, Math.ceil(strength / 3),
-                500, 0,
-                500, 0,
-                500, 0,
-                500, 0
-            )
-   
-            // addPulse methon to add your pulse to channel A
+            // let pulse = DgLabPulseUtil.pulse(
+            //     500, 0,
+            //     500, 0,
+            //     500, 0,
+            //     500, 0,
+            //     500, Math.ceil(strength / 3),
+            //     500, Math.ceil(strength / 3),
+            //     500, Math.ceil(strength / 3),
+            //     500, Math.ceil(strength / 3),
+            //     500, Math.ceil((strength / 3) * 2),
+            //     500, Math.ceil((strength / 3) * 2),
+            //     500, Math.ceil((strength / 3) * 2),
+            //     500, Math.ceil((strength / 3) * 2),
+            //     500, Math.ceil(strength),
+            //     500, Math.ceil(strength),
+            //     500, Math.ceil(strength),
+            //     500, Math.ceil(strength),
+            //     500, Math.ceil((strength / 3) * 2),
+            //     500, Math.ceil((strength / 3) * 2),
+            //     500, Math.ceil((strength / 3) * 2),
+            //     500, Math.ceil((strength / 3) * 2),
+            //     500, Math.ceil(strength / 3),
+            //     500, Math.ceil(strength / 3),
+            //     500, Math.ceil(strength / 3),
+            //     500, Math.ceil(strength / 3),
+            //     500, 0,
+            //     500, 0,
+            //     500, 0,
+            //     500, 0
+            // )
+
+            // 使用方法 addPulse(通道, 波形数据) 方法来添加你的波形到某个通道
             connection.addPulse('a', pulse)
         }
     })
