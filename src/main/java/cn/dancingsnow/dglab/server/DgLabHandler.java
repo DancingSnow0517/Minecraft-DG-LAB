@@ -3,18 +3,19 @@ package cn.dancingsnow.dglab.server;
 import cn.dancingsnow.dglab.api.Connection;
 import cn.dancingsnow.dglab.api.ConnectionManager;
 import cn.dancingsnow.dglab.api.DgLabMessage;
-
 import cn.dancingsnow.dglab.networking.DgLabPackets;
+
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.UUID;
 
