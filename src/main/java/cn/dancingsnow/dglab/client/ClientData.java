@@ -45,4 +45,9 @@ public class ClientData {
             ClientData.qrText = null;
         }
     }
+
+    public static void clear() {
+        ClientData.strength = null;
+        ClientData.qrText = null;
+    }
 }
