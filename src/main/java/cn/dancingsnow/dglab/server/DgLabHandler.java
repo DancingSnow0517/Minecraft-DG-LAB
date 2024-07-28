@@ -4,12 +4,17 @@ import cn.dancingsnow.dglab.api.Connection;
 import cn.dancingsnow.dglab.api.ConnectionManager;
 import cn.dancingsnow.dglab.api.DgLabMessage;
 
+import cn.dancingsnow.dglab.networking.DgLabPackets;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.UUID;
 
@@ -33,6 +38,15 @@ public class DgLabHandler extends SimpleChannelInboundHandler<TextWebSocketFrame
                 connection.setClientId(attr.get());
                 connection.setTargetId(uuid.toString());
                 connection.sendMessage(DgLabMessage.bind(uuid.toString(), "", "targetId"));
+
+                MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+                if (server != null) {
+                    ServerPlayer player =
+                            server.getPlayerList().getPlayer(UUID.fromString(connection.getClientId()));
+                    if (player != null) {
+                        PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(""));
+                    }
+                }
             }
         } else {
             super.userEventTriggered(ctx, evt);
