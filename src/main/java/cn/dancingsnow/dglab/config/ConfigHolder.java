@@ -56,8 +56,8 @@ public class ConfigHolder {
         public float hudScale = 1;
 
         @Configurable
-        @Configurable.Comment({"The gui hud x position", "Default: 5"})
-        public int hudX = 5;
+        @Configurable.Comment({"The gui hud x position", "Default: 25"})
+        public int hudX = 25;
 
         @Configurable
         @Configurable.Comment({"The gui hud y position", "Default: 25"})
