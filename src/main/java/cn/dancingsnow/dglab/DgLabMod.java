@@ -10,11 +10,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.GameShuttingDownEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
@@ -35,9 +35,11 @@ public class DgLabMod {
 
     public DgLabMod(IEventBus modEventBus) {
         ConfigHolder.init();
-        modEventBus.addListener(DgLabMod::onStartUp);
+
         modEventBus.addListener(DgLabMod::registerPayload);
-        NeoForge.EVENT_BUS.addListener(DgLabMod::onShutdown);
+
+        NeoForge.EVENT_BUS.addListener(DgLabMod::onServerStarting);
+        NeoForge.EVENT_BUS.addListener(DgLabMod::onServerStopping);
         NeoForge.EVENT_BUS.addListener(DgLabMod::registerCommand);
         NeoForge.EVENT_BUS.addListener(DgLabMod::onPlayerLogOut);
     }
@@ -63,13 +65,15 @@ public class DgLabMod {
         }
     }
 
-    public static void onStartUp(FMLCommonSetupEvent event) {
+    public static void onServerStarting(ServerStartingEvent event) {
         if (ConfigHolder.INSTANCE.webSocket.enabled) {
             WebSocketServer.run();
         }
     }
 
-    public static void onShutdown(GameShuttingDownEvent event) {
-        WebSocketServer.stop();
+    public static void onServerStopping(ServerStoppingEvent event) {
+        if (WebSocketServer.isRunning()) {
+            WebSocketServer.stop();
+        }
     }
 }

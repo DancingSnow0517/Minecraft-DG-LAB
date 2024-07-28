@@ -23,7 +23,7 @@ dependencyResolutionManagement {
         // Common
         def jeiVersion = "19.0.0.7"
         def reiVersion = "16.0.729"
-        def emiVersion = "1.1.7"
+        def emiVersion = "1.1.10"
         def ae2Version = "18.1.3-alpha"
         def kjsVersion = "2100.7.0-build.56"
 
