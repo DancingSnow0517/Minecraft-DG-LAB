@@ -70,5 +70,5 @@ dependencies {
         runtimeOnly("maven.modrinth:embeddium:1.0.0-beta.1+mc1.21")
     }
 
-    runtimeOnly("curse.maven:probejs-585406:5492036")
+    runtimeOnly("curse.maven:probejs-585406:5536459")
 }

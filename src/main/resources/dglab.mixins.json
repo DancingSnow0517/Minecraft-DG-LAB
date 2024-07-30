@@ -4,7 +4,9 @@
   "package": "cn.dancingsnow.dglab.mixins",
   "compatibilityLevel": "JAVA_8",
   "refmap": "dglab.refmap.json",
+  "plugin": "cn.dancingsnow.dglab.mixins.DgLabMixinPlugin",
   "mixins": [
+    "KJS_ScriptManagerMixin"
   ],
   "client": [
   ],
