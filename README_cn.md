@@ -91,6 +91,9 @@
             //     500, 0,
             //     500, 0
             // )
+   
+            // 使用方法 clearPulse(通道) 方法来清除当前通道的所有波形队列
+            connection.clearPulse('a')
 
             // 使用方法 addPulse(通道, 波形数据) 方法来添加你的波形到某个通道
             connection.addPulse('a', pulse)

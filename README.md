@@ -92,6 +92,9 @@ A Mod to connect minecraft with DgLab
             //     500, 0,
             //     500, 0
             // )
+   
+            // method "clearPulse(channel)" clears all waveform queues for the current channel.
+            connection.clearPulse('a')
 
             // Use addPulse(channel, waveform data) to add your waveform to a channel
             connection.addPulse('a', pulse)
