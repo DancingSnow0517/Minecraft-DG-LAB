@@ -7,8 +7,8 @@ import cn.dancingsnow.dglab.networking.DgLabPackets;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,7 +45,8 @@ public class DgLabHandler extends SimpleChannelInboundHandler<TextWebSocketFrame
                     ServerPlayer player =
                             server.getPlayerList().getPlayer(UUID.fromString(connection.getClientId()));
                     if (player != null) {
-                        PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(""));
+                        DgLabPackets.INSTANCE.send(
+                                PacketDistributor.PLAYER.with(() -> player), new DgLabPackets.ShowQrCode(""));
                     }
                 }
             }

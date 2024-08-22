@@ -8,15 +8,11 @@ import cn.dancingsnow.dglab.server.WebSocketServer;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.event.server.ServerStoppingEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,8 +20,8 @@ import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(DgLabMod.MODID)
-public class DgLabMod {
+
+public class DgLabCommon {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "dglab";
     // Directly reference a slf4j logger
@@ -33,28 +29,23 @@ public class DgLabMod {
 
     public static final Gson GSON = new GsonBuilder().create();
 
-    public DgLabMod(IEventBus modEventBus) {
+    public DgLabCommon() {
+
         ConfigHolder.init();
+        DgLabPackets.init();
 
-        modEventBus.addListener(DgLabMod::registerPayload);
-
-        NeoForge.EVENT_BUS.addListener(DgLabMod::onServerStarting);
-        NeoForge.EVENT_BUS.addListener(DgLabMod::onServerStopping);
-        NeoForge.EVENT_BUS.addListener(DgLabMod::registerCommand);
-        NeoForge.EVENT_BUS.addListener(DgLabMod::onPlayerLogOut);
+        MinecraftForge.EVENT_BUS.addListener(DgLabCommon::onServerStarting);
+        MinecraftForge.EVENT_BUS.addListener(DgLabCommon::onServerStopping);
+        MinecraftForge.EVENT_BUS.addListener(DgLabCommon::registerCommand);
+        MinecraftForge.EVENT_BUS.addListener(DgLabCommon::onPlayerLogOut);
     }
 
     public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+        return new ResourceLocation(MODID, path);
     }
 
     public static void registerCommand(RegisterCommandsEvent event) {
         DgLabCommand.register(event.getDispatcher());
-    }
-
-    public static void registerPayload(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("1");
-        DgLabPackets.init(registrar);
     }
 
     public static void onPlayerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {

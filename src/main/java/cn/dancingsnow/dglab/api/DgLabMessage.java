@@ -1,12 +1,12 @@
 package cn.dancingsnow.dglab.api;
 
-import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.DgLabCommon;
 
 public record DgLabMessage(
         DgLabMessageType type, String clientId, String targetId, String message) {
 
     public String toJson() {
-        return DgLabMod.GSON.toJson(this);
+        return DgLabCommon.GSON.toJson(this);
     }
 
     public static DgLabMessage msg(String clientId, String targetId, String message) {

@@ -1,9 +1,8 @@
 repositories {
-    flatDir {
-        dir "libs"
-    }
+    mavenLocal()
     mavenCentral()
-    maven { url = "https://api.modrinth.com/maven" } // Modrinth Maven
+    maven { url = "https://api.modrinth.com/maven" } // LazyDFU, Jade
+    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, EMI
     maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
     maven {
         url "https://cursemaven.com"
@@ -21,8 +20,9 @@ repositories {
         url = "https://modmaven.dev"
     } // JEI mirror, AE2
     maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
+    maven { url = "https://maven.quiltmc.org/repository/release" } // Quilt Mappings
     maven { url = "https://maven.firstdarkdev.xyz/snapshots" } // LDLib
-    maven {
+    maven { // Flywheel
         url = "https://maven.tterrag.com/"
         content {
             // need to be specific here due to version overlaps
@@ -42,10 +42,7 @@ repositories {
             includeGroup "dev.latvian.mods"
         }
     }
-    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate Fork
-    maven {
-        // EMI
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
+    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
+    maven { url 'https://jitpack.io' } // Mixin Extras, Fabric ASM
+    maven { url = "https://server.cjsah.net:1002/maven/" }
 }

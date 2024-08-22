@@ -1,74 +1,55 @@
-configurations {
-    libraries
-    // This will make sure that all dependencies that you add to the libraries configuration will also be added to the implementation configuration
-    // This way, you only need one dependency declaration for both runtime and compile dependencies
-    implementation.extendsFrom libraries
-}
-
-java {
-    registerFeature("jei") {
-        usingSourceSet(sourceSets.main)
-    }
-    registerFeature("rei") {
-        usingSourceSet(sourceSets.main)
-    }
-    registerFeature("emi") {
-        usingSourceSet(sourceSets.main)
-    }
-    registerFeature("jade") {
-        usingSourceSet(sourceSets.main)
-    }
-    registerFeature("top") {
-        usingSourceSet(sourceSets.main)
-    }
-    registerFeature("kjs") {
-        usingSourceSet(sourceSets.main)
-    }
-}
-
 dependencies {
-    implementation(forge.neoForge)
+    minecraft "com.mojang:minecraft:${libs.versions.minecraft.get()}"
+    mappings loom.layered {
+        it.mappings("org.quiltmc:quilt-mappings:${libs.versions.minecraft.get()}+build.${libs.versions.quiltMappings.get()}:intermediary-v2")
+        it.parchment("org.parchmentmc.data:parchment-${libs.versions.minecraft.get()}:${libs.versions.parchment.get()}@zip")
+        it.officialMojangMappings { nameSyntheticMembers = false }
+    }
 
-    // Configuration
-    api(forge.configuration)
-    jarJar(forge.configuration)
-
-    // JEI
-    jeiCompileOnly(forge.jei.common.api) { transitive = false }
-    jeiCompileOnly(forge.jei.forge.api) { transitive = false }
-    jeiCompileOnly(forge.jei.forge.impl) { transitive = false }
-
-    // REI
-    reiCompileOnlyApi(forge.rei.plugin)
-    reiCompileOnlyApi(forge.rei.api)
-    reiCompileOnly(forge.rei.forge)
-
-    // EMI
-    emiCompileOnlyApi("dev.emi:emi-neoforge:${forge.versions.emi.get()}:api")
-    emiImplementation(forge.emi)
-
-    // Jade
-    jadeImplementation(forge.jade)
-
-    // TOP
-    topCompileOnlyApi(forge.theoneprobe) { transitive = false }
-
-    // KJS
-    kjsImplementation(forge.kubejs)
-
-    libraries("io.netty:netty-codec-http:4.1.97.Final")
-    jarJar("io.netty:netty-codec-http:4.1.97.Final")
-
-    libraries("com.google.zxing:core:3.5.3")
-    jarJar("com.google.zxing:core:3.5.3")
+    forge forge.minecraftForge
 
     // lombok
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    if (System.getenv("RUN_SERVER") == null) {
-        runtimeOnly("maven.modrinth:embeddium:1.0.0-beta.1+mc1.21")
-    }
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-    runtimeOnly("curse.maven:probejs-585406:5536459")
+    // tests
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'io.javalin:javalin:5.4.2'
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+
+    // Mixin Extras
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${this.forge.versions.mixinextras.get()}"))
+    api(include("io.github.llamalad7:mixinextras-forge:${this.forge.versions.mixinextras.get()}"))
+
+    /* -------------------------------------------------- Libraries -------------------------------------------------- */
+
+    modImplementation(forge.configuration) // Configuration
+    include(forge.configuration)
+
+    implementation("io.netty:netty-codec-http:4.1.82.Final")
+    include("io.netty:netty-codec-http:4.1.82.Final")
+    forgeRuntimeLibrary("io.netty:netty-codec-http:4.1.82.Final")
+
+    implementation("com.google.zxing:core:3.5.3")
+    include("com.google.zxing:core:3.5.3")
+    forgeRuntimeLibrary("com.google.zxing:core:3.5.3")
+
+    /* -------------------------------------------------- CompileOnly -------------------------------------------------- */
+
+    modCompileOnly(forge.jei.common.api) { transitive = false } // JEI
+    modCompileOnly(forge.jei.forge.api) { transitive = false }
+    modImplementation(forge.jei.forge.impl) { transitive = false }
+
+    modCompileOnly forge.rei.plugin // REI
+    modCompileOnly forge.rei.api
+    modCompileOnly forge.rei.forge
+
+    modCompileOnly("dev.emi:emi-forge:${forge.versions.emi.get()}:api") // EMI
+    modImplementation forge.emi
+
+    modCompileOnly(forge.theoneprobe) { transitive = false } // TOP
+    modImplementation(forge.jade) // Jade
+    modCompileOnly forge.kubejs // KJS
 }

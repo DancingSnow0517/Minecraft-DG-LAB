@@ -1,14 +1,11 @@
 pluginManagement {
     repositories {
-        mavenLocal()
-        gradlePluginPortal()
-        maven { url = 'https://maven.neoforged.net/releases' }
+        maven { url = "https://maven.fabricmc.net/" }
+        maven { url = "https://maven.architectury.dev/" }
+        maven { url = "https://maven.minecraftforge.net/" }
         maven { url = "https://maven.quiltmc.org/repository/release" }
+        gradlePluginPortal()
     }
-}
-
-plugins {
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
 }
 
 dependencyResolutionManagement {
@@ -17,72 +14,80 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         // Minecraft Version
-        def minecraftVersion = "1.21"
+        def minecraftVersion = "1.20.1"
 
         // Mod Dependencies Versions
         // Common
-        def jeiVersion = "19.0.0.7"
-        def reiVersion = "16.0.729"
+        def jeiVersion = "15.8.0.11"
+        def reiVersion = "12.1.725"
         def emiVersion = "1.1.10"
-        def ae2Version = "18.1.3-alpha"
-        def kjsVersion = "2100.7.0-build.117"
+        def kjsVersion = "2001.6.5-build.7"
 
-        // NeoForge
-        def neoForgeVersion = "21.0.140-beta"
-        def jadeForgeVersion = "15.1.3+neoforge"
-        def topForgeVersion = "1.20.4_neo-11.0.0-1"
+        // Forge
+        def forgeVersion = "47.2.0"
+        def topForgeVersion = "1.20.1-10.0.1-3"
+        def jadeForgeVersion = "11.7.1"
 
         // Libs
-        def parchmentVersion = "2024.07.07" // https://parchmentmc.org/docs/getting-started
-        def shadowVersion = "8.1.1"
+        def quiltMappingsVersion = "5"  // https://lambdaurora.dev/tools/import_quilt.html
+        def parchmentVersion = "2023.09.03" // https://parchmentmc.org/docs/getting-started
+        def shadowVersion = "7.1.2"
+        def architecturyPluginVersion = "3.4-SNAPSHOT"
+        def architecturyLoomVersion = "1.6-SNAPSHOT"
         def macheteVersion = "1.+"
-        def configurationVersion = "5573796"
+        def configurationVersion = "2.2.0"
+        def mixinextrasVersion = "0.3.2"
         def spotlessVersion = "7.0.0.BETA1"
-        def neogradleVersion = "7.0.145"
 
         forge {
-            version("forgeShortVersion", neoForgeVersion)
-            def neoForge = version("neoForge", "${neoForgeVersion}")
-            library("neoForge", "net.neoforged", "neoforge").versionRef(neoForge)
+            version("forgeShortVersion", forgeVersion)
+            def minecraftForge = version("minecratfForge", "${minecraftVersion}-${forgeVersion}")
+            library("minecraftForge", "net.minecraftforge", "forge").versionRef(minecraftForge)
 
             def jei = version("jei", jeiVersion)
             library("jei-common-api", "mezz.jei", "jei-${minecraftVersion}-common-api").versionRef(jei)
-            library("jei-forge-api", "mezz.jei", "jei-${minecraftVersion}-neoforge-api").versionRef(jei)
-            library("jei-forge-impl", "mezz.jei", "jei-${minecraftVersion}-neoforge").versionRef(jei)
+            library("jei-forge-api", "mezz.jei", "jei-${minecraftVersion}-forge-api").versionRef(jei)
+            library("jei-forge-impl", "mezz.jei", "jei-${minecraftVersion}-forge").versionRef(jei)
 
             def rei = version("rei", reiVersion)
-            library("rei-plugin", "me.shedaniel", "RoughlyEnoughItems-default-plugin-neoforge").versionRef(rei)
-            library("rei-api", "me.shedaniel", "RoughlyEnoughItems-api-neoforge").versionRef(rei)
-            library("rei-forge", "me.shedaniel", "RoughlyEnoughItems-neoforge").versionRef(rei)
+            library("rei-plugin", "me.shedaniel", "RoughlyEnoughItems-default-plugin-forge").versionRef(rei)
+            library("rei-api", "me.shedaniel", "RoughlyEnoughItems-api-forge").versionRef(rei)
+            library("rei-forge", "me.shedaniel", "RoughlyEnoughItems-forge").versionRef(rei)
 
             def emi = version("emi", emiVersion + "+" + minecraftVersion)
-            library("emi", "dev.emi", "emi-neoforge").versionRef(emi)
-
-            def jade = version("jade", jadeForgeVersion)
-            library("jade","maven.modrinth", "jade").versionRef(jade)
+            library("emi", "dev.emi", "emi-forge").versionRef(emi)
 
             def theoneprobe = version("theoneprobe", topForgeVersion)
             library("theoneprobe", "mcjty.theoneprobe", "theoneprobe").versionRef(theoneprobe)
 
+            def jade = version("jade", jadeForgeVersion)
+            library("jade", "maven.modrinth", "jade").versionRef(jade)
+
             def kubejs = version("kubejs", kjsVersion)
-            library("kubejs", "dev.latvian.mods", "kubejs-neoforge").versionRef(kubejs)
+            library("kubejs", "dev.latvian.mods", "kubejs-forge").versionRef(kubejs)
+
+            def mixinextras = version("mixinextras", mixinextrasVersion)
+            library("mixinextras-forge", "io.github.llamalad7", "mixinextras-forge").versionRef(mixinextras)
 
             def configuration = version("configuration", configurationVersion)
-            library("configuration", "curse.maven", "configuration-444699").versionRef(configuration)
-
-            def ae2 = version("ae2", ae2Version)
-            library("ae2", "appeng", "appliedenergistics2-neoforge").versionRef(ae2)
+            library("configuration", "dev.toma.configuration", "configuration-forge-1.20.1").versionRef(configuration)
         }
 
         libs {
+            version("quiltMappings", quiltMappingsVersion)
             version("parchment", parchmentVersion)
-            version("minecraft", minecraftVersion)
 
-            def neogradle = version("neogradle", neogradleVersion)
-            plugin("neogradle", "net.neoforged.gradle.userdev").versionRef(neogradle)
+            def minecraft = version("minecraft", minecraftVersion)
+            library("minecraft", "com.mojang", "minecraft").versionRef(minecraft)
 
             def shadow = version("shadow", shadowVersion)
             plugin("shadow", "com.github.johnrengelman.shadow").versionRef(shadow)
+
+            def architecturyPlugin = version("architectury", architecturyPluginVersion)
+            plugin("architectury", "architectury-plugin").versionRef(architecturyPlugin)
+
+            def architecturyLoom = version("architectury-loom", architecturyLoomVersion)
+            plugin("architectury-loom", "dev.architectury.loom").versionRef(architecturyLoom)
 
             def machete = version("machete", macheteVersion)
             plugin("machete", "io.github.p03w.machete").versionRef(machete)

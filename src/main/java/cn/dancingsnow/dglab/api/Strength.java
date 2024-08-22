@@ -1,29 +1,11 @@
 package cn.dancingsnow.dglab.api;
 
-import cn.dancingsnow.dglab.DgLabMod;
+import net.minecraft.network.FriendlyByteBuf;
 
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-
-import io.netty.buffer.ByteBuf;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
 @Data
-public class Strength implements CustomPacketPayload {
-
-    public static final Type<Strength> TYPE = new Type<>(DgLabMod.id("strength"));
-    public static final StreamCodec<ByteBuf, Strength> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT,
-            Strength::getACurrentStrength,
-            ByteBufCodecs.VAR_INT,
-            Strength::getBCurrentStrength,
-            ByteBufCodecs.VAR_INT,
-            Strength::getAMaxStrength,
-            ByteBufCodecs.VAR_INT,
-            Strength::getBMaxStrength,
-            Strength::new);
+public class Strength {
 
     private int aCurrentStrength = 0;
     private int bCurrentStrength = 0;
@@ -39,8 +21,18 @@ public class Strength implements CustomPacketPayload {
         this.bMaxStrength = bMaxStrength;
     }
 
-    @Override
-    public @NotNull Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+    public static void encode(Strength strength, FriendlyByteBuf buf) {
+        buf.writeInt(strength.aCurrentStrength);
+        buf.writeInt(strength.bCurrentStrength);
+        buf.writeInt(strength.aMaxStrength);
+        buf.writeInt(strength.bMaxStrength);
+    }
+
+    public static Strength decode(FriendlyByteBuf buf) {
+        int aCurrentStrength = buf.readInt();
+        int bCurrentStrength = buf.readInt();
+        int aMaxStrength = buf.readInt();
+        int bMaxStrength = buf.readInt();
+        return new Strength(aCurrentStrength, bCurrentStrength, aMaxStrength, bMaxStrength);
     }
 }

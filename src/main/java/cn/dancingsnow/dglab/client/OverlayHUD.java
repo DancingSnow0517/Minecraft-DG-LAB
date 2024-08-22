@@ -3,23 +3,20 @@ package cn.dancingsnow.dglab.client;
 import cn.dancingsnow.dglab.api.Strength;
 import cn.dancingsnow.dglab.config.ConfigHolder;
 
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
 @OnlyIn(Dist.CLIENT)
 public class OverlayHUD {
-    public static void render(GuiGraphics graphics, DeltaTracker partialTick) {
+    public static void render(GuiGraphics graphics, float partialTick) {
         Minecraft mc = Minecraft.getInstance();
         Strength strength = ClientData.getStrength();
-        if (!ConfigHolder.INSTANCE.client.enabled
-                || strength == null
-                || mc.getDebugOverlay().showDebugScreen()) {
+        if (!ConfigHolder.INSTANCE.client.enabled || strength == null || mc.options.renderDebug) {
             return;
         }
         Font font = mc.font;

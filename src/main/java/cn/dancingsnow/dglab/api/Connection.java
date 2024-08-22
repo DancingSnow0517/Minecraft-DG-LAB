@@ -1,12 +1,13 @@
 package cn.dancingsnow.dglab.api;
 
-import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.DgLabCommon;
+import cn.dancingsnow.dglab.networking.DgLabPackets;
 import cn.dancingsnow.dglab.util.DgLabPulseUtil;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.google.gson.JsonSyntaxException;
 import io.netty.channel.Channel;
@@ -41,10 +42,10 @@ public class Connection {
     }
 
     public void handle(String msg) {
-        DgLabMod.LOGGER.info("Received: {}", msg);
+        DgLabCommon.LOGGER.info("Received: {}", msg);
         DgLabMessage message;
         try {
-            message = DgLabMod.GSON.fromJson(msg, DgLabMessage.class);
+            message = DgLabCommon.GSON.fromJson(msg, DgLabMessage.class);
             Objects.requireNonNull(message.type());
             Objects.requireNonNull(message.clientId());
             Objects.requireNonNull(message.targetId());
@@ -69,7 +70,7 @@ public class Connection {
                         ServerPlayer player =
                                 currentServer.getPlayerList().getPlayer(UUID.fromString(clientId));
                         if (player != null) {
-                            PacketDistributor.sendToPlayer(player, strength);
+                            DgLabPackets.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), strength);
                         }
                     }
                 }
@@ -82,7 +83,7 @@ public class Connection {
     }
 
     public void sendMessage(String message) {
-        DgLabMod.LOGGER.info("Sending message: {}", message);
+        DgLabCommon.LOGGER.info("Sending message: {}", message);
         channel.writeAndFlush(new TextWebSocketFrame(message));
     }
 

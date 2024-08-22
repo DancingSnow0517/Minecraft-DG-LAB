@@ -18,7 +18,7 @@ EntityEvents.death('player', event => {
 })
 
 // AfterHurt event for 'player'
-EntityEvents.afterHurt('player', event => {
+EntityEvents.hurt('player', event => {
     // Use the player's UUID to find the connected connection
     let connection = DgLabManager.getByUUID(event.getEntity().getUuid())
 

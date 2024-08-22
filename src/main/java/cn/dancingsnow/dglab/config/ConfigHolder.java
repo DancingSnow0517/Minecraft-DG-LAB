@@ -1,13 +1,13 @@
 package cn.dancingsnow.dglab.config;
 
-import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.DgLabCommon;
 
 import dev.toma.configuration.Configuration;
 import dev.toma.configuration.config.Config;
 import dev.toma.configuration.config.Configurable;
 import dev.toma.configuration.config.format.ConfigFormats;
 
-@Config(id = DgLabMod.MODID)
+@Config(id = DgLabCommon.MODID)
 public class ConfigHolder {
 
     public static ConfigHolder INSTANCE;

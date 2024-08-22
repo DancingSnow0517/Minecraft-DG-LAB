@@ -1,15 +1,14 @@
 package cn.dancingsnow.dglab.client;
 
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
 public class QrCodeHUD {
-    public static void render(GuiGraphics graphics, DeltaTracker partialTick) {
+    public static void render(GuiGraphics graphics, float partialTick) {
         Minecraft mc = Minecraft.getInstance();
-        if (ClientData.getQrText() == null || mc.getDebugOverlay().showDebugScreen()) return;
+        if (ClientData.getQrText() == null || mc.options.renderDebug) return;
 
         PoseStack poseStack = graphics.pose();
         poseStack.pushPose();

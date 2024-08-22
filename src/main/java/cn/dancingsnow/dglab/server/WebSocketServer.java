@@ -1,6 +1,6 @@
 package cn.dancingsnow.dglab.server;
 
-import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.DgLabCommon;
 import cn.dancingsnow.dglab.config.ConfigHolder;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -55,7 +55,7 @@ public class WebSocketServer {
                         try {
                             ChannelFuture f =
                                     bootstrap.bind(ConfigHolder.INSTANCE.webSocket.port).sync();
-                            DgLabMod.LOGGER.info(
+                            DgLabCommon.LOGGER.info(
                                     "DgLab WebSocket server start in port {}", ConfigHolder.INSTANCE.webSocket.port);
                             serverChannel = f.channel();
                             running = true;
@@ -86,7 +86,7 @@ public class WebSocketServer {
                     })
                     .start();
         } catch (Exception e) {
-            DgLabMod.LOGGER.error(e.getMessage(), e);
+            DgLabCommon.LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -94,7 +94,7 @@ public class WebSocketServer {
         if (running && serverChannel != null) {
             serverChannel.close();
             running = false;
-            DgLabMod.LOGGER.info("DgLab WebSocket server stopped");
+            DgLabCommon.LOGGER.info("DgLab WebSocket server stopped");
         }
     }
 }

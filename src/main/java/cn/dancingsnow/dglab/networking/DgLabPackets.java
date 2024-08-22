@@ -1,49 +1,62 @@
 package cn.dancingsnow.dglab.networking;
 
-import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.DgLabCommon;
 import cn.dancingsnow.dglab.api.Strength;
 import cn.dancingsnow.dglab.client.ClientData;
 
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-
-import io.netty.buffer.ByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class DgLabPackets {
-    public static void init(PayloadRegistrar registrar) {
-        registrar.playToClient(
-                Strength.TYPE, Strength.STREAM_CODEC, (strength, ctx) -> ClientData.setStrength(strength));
+    private static final String PROTOCOL_VERSION = "1";
+    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
+            DgLabCommon.id("main"),
+            () -> PROTOCOL_VERSION,
+            PROTOCOL_VERSION::equals,
+            PROTOCOL_VERSION::equals);
 
-        registrar.playToClient(
-                ClearStrength.TYPE, ClearStrength.STREAM_CODEC, (c, ctx) -> ClientData.setStrength(null));
+    public static void init() {
+        INSTANCE.registerMessage(
+                0, Strength.class, Strength::encode, Strength::decode, ((strength, ctx) -> {
+                    ctx.get()
+                            .enqueueWork(() -> DistExecutor.unsafeRunWhenOn(
+                                    Dist.CLIENT, () -> () -> ClientData.setStrength(strength)));
+                    ctx.get().setPacketHandled(true);
+                }));
 
-        registrar.playToClient(
-                ShowQrCode.TYPE, ShowQrCode.STREAM_CODEC, (show, ctx) -> ClientData.setQrText(show.text()));
+        INSTANCE.registerMessage(
+                1,
+                ClearStrength.class,
+                (o, friendlyByteBuf) -> {},
+                buf -> new ClearStrength(),
+                (clear, ctx) -> {
+                    ctx.get()
+                            .enqueueWork(() -> DistExecutor.unsafeRunWhenOn(
+                                    Dist.CLIENT, () -> () -> ClientData.setStrength(null)));
+                    ctx.get().setPacketHandled(true);
+                });
+
+        INSTANCE.registerMessage(
+                2, ShowQrCode.class, ShowQrCode::encode, ShowQrCode::decode, ((show, ctx) -> {
+                    ctx.get()
+                            .enqueueWork(() -> DistExecutor.unsafeRunWhenOn(
+                                    Dist.CLIENT, () -> () -> ClientData.setQrText(show.text())));
+                    ctx.get().setPacketHandled(true);
+                }));
     }
 
-    public static class ClearStrength implements CustomPacketPayload {
-        public static final ClearStrength INSTANCE = new ClearStrength();
+    public static class ClearStrength {}
 
-        public static final Type<ClearStrength> TYPE = new Type<>(DgLabMod.id("clear_strength"));
-        public static final StreamCodec<ByteBuf, ClearStrength> STREAM_CODEC =
-                StreamCodec.unit(INSTANCE);
-
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
+    public record ShowQrCode(String text) {
+        public static void encode(ShowQrCode code, FriendlyByteBuf buf) {
+            buf.writeUtf(code.text);
         }
-    }
 
-    public record ShowQrCode(String text) implements CustomPacketPayload {
-        public static final Type<ShowQrCode> TYPE = new Type<>(DgLabMod.id("show_qr_code"));
-        public static final StreamCodec<ByteBuf, ShowQrCode> STREAM_CODEC =
-                StreamCodec.composite(ByteBufCodecs.STRING_UTF8, ShowQrCode::text, ShowQrCode::new);
-
-        @Override
-        public Type<? extends CustomPacketPayload> type() {
-            return TYPE;
+        public static ShowQrCode decode(FriendlyByteBuf buf) {
+            return new ShowQrCode(buf.readUtf());
         }
     }
 }

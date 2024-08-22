@@ -1,14 +1,14 @@
 package cn.dancingsnow.dglab.server;
 
-import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.DgLabCommon;
 import cn.dancingsnow.dglab.api.Connection;
 import cn.dancingsnow.dglab.api.ConnectionManager;
 import cn.dancingsnow.dglab.networking.DgLabPackets;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -35,7 +35,7 @@ class DgLabHandlerAdapter extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) {
         Connection connection = new Connection(ctx.channel());
         ConnectionManager.CONNECTIONS.add(connection);
-        DgLabMod.LOGGER.info("new DgLab connected");
+        DgLabCommon.LOGGER.info("new DgLab connected");
     }
 
     @Override
@@ -43,15 +43,17 @@ class DgLabHandlerAdapter extends ChannelInboundHandlerAdapter {
         Connection connection = ConnectionManager.getByChannel(ctx.channel());
         if (connection != null) {
             ConnectionManager.CONNECTIONS.remove(connection);
-            DgLabMod.LOGGER.info("DgLab disconnected, clientId: {}", connection.getClientId());
+            DgLabCommon.LOGGER.info("DgLab disconnected, clientId: {}", connection.getClientId());
 
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
                 ServerPlayer player =
                         server.getPlayerList().getPlayer(UUID.fromString(connection.getClientId()));
                 if (player != null) {
-                    PacketDistributor.sendToPlayer(player, DgLabPackets.ClearStrength.INSTANCE);
-                    PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(""));
+                    DgLabPackets.INSTANCE.send(
+                            PacketDistributor.PLAYER.with(() -> player), new DgLabPackets.ClearStrength());
+                    DgLabPackets.INSTANCE.send(
+                            PacketDistributor.PLAYER.with(() -> player), new DgLabPackets.ShowQrCode(""));
                 }
             }
         }

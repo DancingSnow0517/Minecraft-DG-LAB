@@ -1,14 +1,14 @@
 package cn.dancingsnow.dglab.client;
 
-import cn.dancingsnow.dglab.DgLabMod;
+import cn.dancingsnow.dglab.DgLabCommon;
 import cn.dancingsnow.dglab.api.Strength;
 import cn.dancingsnow.dglab.util.QRCodeUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import com.google.zxing.WriterException;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -21,7 +21,7 @@ import java.io.IOException;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientData {
-    public static final ResourceLocation QR_CODE_ID = DgLabMod.id("qr_code");
+    public static final ResourceLocation QR_CODE_ID = DgLabCommon.id("qr_code");
     private static final Minecraft mc = Minecraft.getInstance();
 
     @Getter
@@ -39,7 +39,7 @@ public class ClientData {
                 DynamicTexture dynamicTexture = new DynamicTexture(image);
                 mc.getTextureManager().register(QR_CODE_ID, dynamicTexture);
             } catch (IOException | WriterException e) {
-                DgLabMod.LOGGER.error(e.getMessage(), e);
+                DgLabCommon.LOGGER.error(e.getMessage(), e);
             }
         } else {
             ClientData.qrText = null;

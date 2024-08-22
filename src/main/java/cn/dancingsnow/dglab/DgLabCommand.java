@@ -10,7 +10,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -18,7 +18,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 public class DgLabCommand {
 
     private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal(
-                    DgLabMod.MODID)
+                    DgLabCommon.MODID)
             .then(Commands.literal("connect").executes(ctx -> {
                 if (WebSocketServer.isRunning()) {
                     ServerPlayer player = ctx.getSource().getPlayerOrException();
@@ -27,7 +27,8 @@ public class DgLabCommand {
                                     ConfigHolder.INSTANCE.webSocket.address,
                                     ConfigHolder.INSTANCE.webSocket.port,
                                     player.getUUID().toString());
-                    PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(qr));
+                    DgLabPackets.INSTANCE.send(
+                            PacketDistributor.PLAYER.with(() -> player), new DgLabPackets.ShowQrCode(qr));
                     ctx.getSource()
                             .sendSuccess(() -> Component.translatable("message.dglab.scan_qr_code"), true);
                 } else {
@@ -38,7 +39,8 @@ public class DgLabCommand {
             }))
             .then(Commands.literal("disconnect").executes(ctx -> {
                 ServerPlayer player = ctx.getSource().getPlayerOrException();
-                PacketDistributor.sendToPlayer(player, new DgLabPackets.ShowQrCode(""));
+                DgLabPackets.INSTANCE.send(
+                        PacketDistributor.PLAYER.with(() -> player), new DgLabPackets.ShowQrCode(""));
                 Connection connection = ConnectionManager.getByUUID(player.getUUID());
                 if (connection != null) {
                     connection.disconnect();
