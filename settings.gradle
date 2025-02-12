@@ -23,7 +23,7 @@ dependencyResolutionManagement {
         // Common
         def jeiVersion = "19.17.0.193"
         def reiVersion = "16.0.744"
-        def kjsVersion = "2100.7.0-build.117"
+        def kjsVersion = "2101.7.1-build.181"
 
         // NeoForge
         def neoForgeVersion = "21.1.79"

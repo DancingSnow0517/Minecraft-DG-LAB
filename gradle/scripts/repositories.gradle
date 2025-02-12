@@ -40,6 +40,13 @@ repositories {
         url = "https://maven.saps.dev/minecraft"
         content {
             includeGroup "dev.latvian.mods"
+            includeGroup "dev.latvian.apps"
+        }
+    }
+    maven {
+        url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
         }
     }
     maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate Fork

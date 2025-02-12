@@ -22,8 +22,9 @@ public class DgLabCommand {
             .then(Commands.literal("connect").executes(ctx -> {
                 if (WebSocketServer.isRunning()) {
                     ServerPlayer player = ctx.getSource().getPlayerOrException();
-                    String qr = "https://www.dungeon-lab.com/app-download.php#DGLAB-SOCKET#ws://%s:%d/%s"
+                    String qr = "https://www.dungeon-lab.com/app-download.php#DGLAB-SOCKET#%s://%s:%d/%s"
                             .formatted(
+                                    ConfigHolder.INSTANCE.webSocket.useHttps ? "wss" : "ws",
                                     ConfigHolder.INSTANCE.webSocket.address,
                                     ConfigHolder.INSTANCE.webSocket.port,
                                     player.getUUID().toString());

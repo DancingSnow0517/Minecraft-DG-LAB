@@ -2,10 +2,10 @@ package cn.dancingsnow.dglab.mixins;
 
 import cn.dancingsnow.dglab.DgLabMod;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.latvian.mods.kubejs.script.ScriptManager;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,11 +22,15 @@ import java.util.Optional;
 @Mixin(value = ScriptManager.class, remap = false)
 public class KJS_ScriptManagerMixin {
     @Inject(
-        method = "loadPackFromDirectory",
-        at = @At(value = "INVOKE", target = "Ljava/io/OutputStream;write([B)V", shift = At.Shift.AFTER, ordinal = 0)
-    )
+            method = "loadPackFromDirectory",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target = "Ljava/io/OutputStream;write([B)V",
+                            shift = At.Shift.AFTER,
+                            ordinal = 0))
     private void onWriteExampleScript(
-        Path path, String name, boolean exampleFile, CallbackInfo ci, @Local OutputStream out) {
+            Path path, String name, boolean exampleFile, CallbackInfo ci, @Local OutputStream out) {
         if (path != ScriptType.SERVER.path) return;
         Optional<? extends ModContainer> optional = ModList.get().getModContainerById(DgLabMod.MODID);
         optional.ifPresent(container -> {

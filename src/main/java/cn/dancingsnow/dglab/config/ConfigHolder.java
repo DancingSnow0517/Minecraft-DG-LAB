@@ -44,6 +44,14 @@ public class ConfigHolder {
         @Configurable.Comment({"The port for the DgLab ws server port number", "Default: 8080"})
         @Configurable.Range(min = 1, max = 65535)
         public int port = 8080;
+
+        @Configurable
+        @Configurable.Comment({
+            "If true, connect to WebSocket server using HTTPS protocol",
+            "If you connect from the Internet, you may need to turn on this option",
+            "Default: false"
+        })
+        public boolean useHttps = false;
     }
 
     public static class ClientConfigs {
