@@ -32,7 +32,7 @@ dependencyResolutionManagement {
         def parchmentVersion = "2024.11.17" // https://parchmentmc.org/docs/getting-started
         def shadowVersion = "8.1.1"
         def macheteVersion = "1.+"
-        def configurationVersion = "5573796"
+        def configurationVersion = "5774720"
         def spotlessVersion = "7.0.0.BETA1"
         def modDevGradleVersion = "2.0.34-beta"
 

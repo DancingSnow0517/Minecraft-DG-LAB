@@ -8,6 +8,7 @@
     "config.dglab.option.hudY": "HUD Y",
     "config.dglab.option.port": "Port",
     "config.dglab.option.webSocket": "WebSocket Settings",
+    "config.dglab.option.useHttps": "Use Https",
     "config.screen.dglab": "DgLab Config",
     "message.dglab.scan_qr_code": "Scan the QR code in the upper right corner to connect",
     "message.dglab.disconnect": "disconnect from WebSocket server",

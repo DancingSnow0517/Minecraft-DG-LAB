@@ -8,6 +8,7 @@
     "config.dglab.option.hudY": "HUD Y",
     "config.dglab.option.port": "端口",
     "config.dglab.option.webSocket": "WebSocket 设置",
+    "config.dglab.option.useHttps": "使用 Https",
     "config.screen.dglab": "DgLab 配置",
     "message.dglab.scan_qr_code": "扫描右上角的二维码进行连接",
     "message.dglab.disconnect": "断开与 WebSocket 服务器的连接",
