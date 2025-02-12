@@ -3,7 +3,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    alias libs.plugins.neogradle
+    alias libs.plugins.modDevGradle
     alias libs.plugins.machete
     alias libs.plugins.spotless
 }
@@ -17,7 +17,7 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-apply from: "$rootDir/gradle/scripts/dependencies.gradle"
+apply from: "$rootDir/dependencies.gradle"
 apply from: "$rootDir/gradle/scripts/jars.gradle"
 apply from: "$rootDir/gradle/scripts/neogradle.gradle"
 apply from: "$rootDir/gradle/scripts/publishing.gradle"

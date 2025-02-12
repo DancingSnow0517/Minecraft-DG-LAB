@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "cn.dancingsnow.dglab.mixins",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_21",
   "refmap": "dglab.refmap.json",
   "plugin": "cn.dancingsnow.dglab.mixins.DgLabMixinPlugin",
   "mixins": [

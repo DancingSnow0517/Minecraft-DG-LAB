@@ -1,18 +1,8 @@
-configurations {
-    libraries
-    // This will make sure that all dependencies that you add to the libraries configuration will also be added to the implementation configuration
-    // This way, you only need one dependency declaration for both runtime and compile dependencies
-    implementation.extendsFrom libraries
-}
-
 java {
     registerFeature("jei") {
         usingSourceSet(sourceSets.main)
     }
     registerFeature("rei") {
-        usingSourceSet(sourceSets.main)
-    }
-    registerFeature("emi") {
         usingSourceSet(sourceSets.main)
     }
     registerFeature("jade") {
@@ -27,8 +17,6 @@ java {
 }
 
 dependencies {
-    implementation(forge.neoForge)
-
     // Configuration
     api(forge.configuration)
     jarJar(forge.configuration)
@@ -43,24 +31,23 @@ dependencies {
     reiCompileOnlyApi(forge.rei.api)
     reiCompileOnly(forge.rei.forge)
 
-    // EMI
-    emiCompileOnlyApi("dev.emi:emi-neoforge:${forge.versions.emi.get()}:api")
-    emiImplementation(forge.emi)
-
-    // Jade
-    jadeImplementation(forge.jade)
-
-    // TOP
-    topCompileOnlyApi(forge.theoneprobe) { transitive = false }
-
     // KJS
     kjsImplementation(forge.kubejs)
 
-    libraries("io.netty:netty-codec-http:4.1.97.Final")
-    jarJar("io.netty:netty-codec-http:4.1.97.Final")
+    jarJar(implementation("io.netty:netty-codec-http")) {
+        version {
+            prefer '4.1.97.Final'
+        }
+    }
+    additionalRuntimeClasspath "io.netty:netty-codec-http:4.1.97.Final"
 
-    libraries("com.google.zxing:core:3.5.3")
-    jarJar("com.google.zxing:core:3.5.3")
+    jarJar(implementation("com.google.zxing:core")) {
+        version {
+            strictly '[3.5.0,)'
+            prefer '3.5.3'
+        }
+    }
+    additionalRuntimeClasspath "com.google.zxing:core:3.5.3"
 
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'

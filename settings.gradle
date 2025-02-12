@@ -17,28 +17,24 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         // Minecraft Version
-        def minecraftVersion = "1.21"
+        def minecraftVersion = "1.21.1"
 
         // Mod Dependencies Versions
         // Common
-        def jeiVersion = "19.0.0.7"
-        def reiVersion = "16.0.729"
-        def emiVersion = "1.1.10"
-        def ae2Version = "18.1.3-alpha"
+        def jeiVersion = "19.17.0.193"
+        def reiVersion = "16.0.744"
         def kjsVersion = "2100.7.0-build.117"
 
         // NeoForge
-        def neoForgeVersion = "21.0.140-beta"
-        def jadeForgeVersion = "15.1.3+neoforge"
-        def topForgeVersion = "1.20.4_neo-11.0.0-1"
+        def neoForgeVersion = "21.1.79"
 
         // Libs
-        def parchmentVersion = "2024.07.07" // https://parchmentmc.org/docs/getting-started
+        def parchmentVersion = "2024.11.17" // https://parchmentmc.org/docs/getting-started
         def shadowVersion = "8.1.1"
         def macheteVersion = "1.+"
         def configurationVersion = "5573796"
         def spotlessVersion = "7.0.0.BETA1"
-        def neogradleVersion = "7.0.145"
+        def modDevGradleVersion = "2.0.34-beta"
 
         forge {
             version("forgeShortVersion", neoForgeVersion)
@@ -55,31 +51,19 @@ dependencyResolutionManagement {
             library("rei-api", "me.shedaniel", "RoughlyEnoughItems-api-neoforge").versionRef(rei)
             library("rei-forge", "me.shedaniel", "RoughlyEnoughItems-neoforge").versionRef(rei)
 
-            def emi = version("emi", emiVersion + "+" + minecraftVersion)
-            library("emi", "dev.emi", "emi-neoforge").versionRef(emi)
-
-            def jade = version("jade", jadeForgeVersion)
-            library("jade","maven.modrinth", "jade").versionRef(jade)
-
-            def theoneprobe = version("theoneprobe", topForgeVersion)
-            library("theoneprobe", "mcjty.theoneprobe", "theoneprobe").versionRef(theoneprobe)
-
             def kubejs = version("kubejs", kjsVersion)
             library("kubejs", "dev.latvian.mods", "kubejs-neoforge").versionRef(kubejs)
 
             def configuration = version("configuration", configurationVersion)
             library("configuration", "curse.maven", "configuration-444699").versionRef(configuration)
-
-            def ae2 = version("ae2", ae2Version)
-            library("ae2", "appeng", "appliedenergistics2-neoforge").versionRef(ae2)
         }
 
         libs {
             version("parchment", parchmentVersion)
             version("minecraft", minecraftVersion)
 
-            def neogradle = version("neogradle", neogradleVersion)
-            plugin("neogradle", "net.neoforged.gradle.userdev").versionRef(neogradle)
+            def modDevGradle = version("modDevGradle", modDevGradleVersion)
+            plugin("modDevGradle", "net.neoforged.moddev").versionRef(modDevGradle)
 
             def shadow = version("shadow", shadowVersion)
             plugin("shadow", "com.github.johnrengelman.shadow").versionRef(shadow)

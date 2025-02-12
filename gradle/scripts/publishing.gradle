@@ -1,6 +1,5 @@
 artifacts {
     archives tasks.jar
-    archives tasks.jarJar
     archives tasks.sourcesJar
 }
 
