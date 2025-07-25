@@ -87,7 +87,7 @@ public class Connection {
     }
 
     public void disconnect() {
-        sendMessage(new DgLabMessage(DgLabMessageType.BREAK, clientId, targetId, ""));
+        sendMessage(new DgLabMessage(DgLabMessageType.BREAK, clientId, targetId, "209"));
         channel.close();
     }
 
