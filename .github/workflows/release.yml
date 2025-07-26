@@ -1,4 +1,4 @@
-name: Release ExampleMod
+name: Release Minecraft-DG-LAB
 on:
   release:
     types:
