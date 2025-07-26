@@ -1,4 +1,4 @@
-name: CI For ExampleMod
+name: CI For Minecraft-DG-LAB
 on:
   push:
     paths:
