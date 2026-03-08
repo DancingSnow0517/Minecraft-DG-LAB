@@ -60,6 +60,15 @@ public class ConfigHolder {
         public boolean enabled = true;
 
         @Configurable
+        @Configurable.Comment({
+            "Bukkit 兼容模式。",
+            "如果启用，DG-LAB 的数据包将被视为可选通道，",
+            "使得客户端可以接收来自非 NeoForge 服务器（如 Bukkit/Paper）的 dglab:* 自定义数据包。",
+            "默认值：false"
+        })
+        public boolean bukkitCompatibilityMode = false;
+
+        @Configurable
         @Configurable.Comment({"The Gui Hud Scale", "Default: 1"})
         public float hudScale = 1;
 

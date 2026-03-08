@@ -3,6 +3,7 @@ package cn.dancingsnow.dglab.networking;
 import cn.dancingsnow.dglab.DgLabMod;
 import cn.dancingsnow.dglab.api.Strength;
 import cn.dancingsnow.dglab.client.ClientData;
+import cn.dancingsnow.dglab.config.ConfigHolder;
 
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,13 +14,16 @@ import io.netty.buffer.ByteBuf;
 
 public class DgLabPackets {
     public static void init(PayloadRegistrar registrar) {
-        registrar.playToClient(
+        PayloadRegistrar r =
+                ConfigHolder.INSTANCE.client.bukkitCompatibilityMode ? registrar.optional() : registrar;
+
+        r.playToClient(
                 Strength.TYPE, Strength.STREAM_CODEC, (strength, ctx) -> ClientData.setStrength(strength));
 
-        registrar.playToClient(
+        r.playToClient(
                 ClearStrength.TYPE, ClearStrength.STREAM_CODEC, (c, ctx) -> ClientData.setStrength(null));
 
-        registrar.playToClient(
+        r.playToClient(
                 ShowQrCode.TYPE, ShowQrCode.STREAM_CODEC, (show, ctx) -> ClientData.setQrText(show.text()));
     }
 

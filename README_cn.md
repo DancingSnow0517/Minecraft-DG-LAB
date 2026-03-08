@@ -115,3 +115,5 @@
   * 一个字符串来设置 WebSocket 连接地址，如果你的电脑和你的安装 DG-LAB 的手机在同一个局域网，可以设置此值为类似 `192.168.xx.xx`，这是你电脑的 ip 地址，可以运行 `ipconfig` 来查看。
 - port (int)
   * 运行 WebSocket Server 的端口，将会在这个端口的 WebSocket Server 和你的 DG-LAB APP 连接。
+- bukkitCompatibilityMode (boolean)
+  * Bukkit 兼容模式。如果设置为 `true`，客户端将允许接收来自非 NeoForge 服务器（如 Bukkit/Paper）的 `dglab:*` 自定义数据包。默认为 `false`。若您的服务器是 Bukkit/Paper 且安装了 Minecraft-DG-LAB-Bukkit 插件，请开启此选项。

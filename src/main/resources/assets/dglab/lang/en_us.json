@@ -6,6 +6,7 @@
     "config.dglab.option.hudScale": "HUD Scale",
     "config.dglab.option.hudX": "HUD X",
     "config.dglab.option.hudY": "HUD Y",
+    "config.dglab.option.bukkitCompatibilityMode": "Bukkit Compatibility Mode",
     "config.dglab.option.port": "Port",
     "config.dglab.option.webSocket": "WebSocket Settings",
     "config.dglab.option.useHttps": "Use Https",

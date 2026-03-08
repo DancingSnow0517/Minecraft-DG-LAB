@@ -6,6 +6,7 @@
     "config.dglab.option.hudScale": "HUD 缩放",
     "config.dglab.option.hudX": "HUD X",
     "config.dglab.option.hudY": "HUD Y",
+    "config.dglab.option.bukkitCompatibilityMode": "Bukkit 兼容模式",
     "config.dglab.option.port": "端口",
     "config.dglab.option.webSocket": "WebSocket 设置",
     "config.dglab.option.useHttps": "使用 Https",

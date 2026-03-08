@@ -117,3 +117,6 @@ you can see the config file in `.minecraft/config/dglab.yml`, when you first sta
   * A String to set the ws address, if your computer and your phone installed `DG-LAB` in same LAN, can set it to `192.168.xx.xx` that your computer ip address
 - port (int)
   * the port to create ws server, and DG-LAB app will connect it.
+- bukkitCompatibilityMode (boolean)
+  * If true, DG-LAB payloads will be treated as optional channels, so the client can accept `dglab:*` custom payloads from non-NeoForge servers (e.g., Bukkit/Paper). Default: `false`.
+  * If your server is Bukkit/Paper and you have installed Minecraft-DG-LAB-Bukkit plugin, please set this option to `true`.
